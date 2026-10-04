@@ -12,7 +12,6 @@ import { useAkunStore } from '../akun/akunStore';
 import { namaTampil, type HarianAkun } from '../akun/tipe';
 import { LencanaPeringkat } from '../components/LencanaPeringkat';
 import { LogoApp } from '../components/LogoApp';
-import { LogoPanitia } from '../components/LogoPanitia';
 import { PengaturanSuara } from '../components/PengaturanSuara';
 
 const WARNA = Object.values(WARNA_GOLONGAN);
@@ -70,12 +69,8 @@ export function MainMenu() {
         ))}
       </div>
 
-      <div className="w-full rounded-xl border border-black/5 bg-white/70 px-3 py-1 backdrop-blur-sm">
-        <LogoPanitia judul="FORKOM FKIP 2026 · Gamifikasi Pembelajaran" tinggi={36} />
-      </div>
-
-      <div className="flex flex-col items-center gap-1">
-        <LogoApp lebarMaks={208} />
+      <div className="mb-1 flex flex-col items-center gap-1.5">
+        <LogoApp lebarMaks={248} />
         <h1 className="sr-only">UNO-Chem Edisi Struktur Atom</h1>
         <p className="text-xs font-bold text-tinta/55">
           Edisi Struktur Atom · proton, neutron &amp; elektron sambil bermain

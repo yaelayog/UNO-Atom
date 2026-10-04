@@ -1,5 +1,4 @@
 import { KREDIT } from '../data/kredit';
-import { LogoPanitia } from '../components/LogoPanitia';
 import { BagianInfo, KerangkaInfo } from '../components/LayarInfo';
 
 export function RulesScreen() {
@@ -160,10 +159,6 @@ export function AboutScreen() {
         Konten: 47 unsur dari 5 golongan · bank soal kuis bertingkat · Fun Fact
         edukatif. Materi disederhanakan untuk jenjang sekolah.
       </p>
-
-      <div className="pt-2">
-        <LogoPanitia judul="Diselenggarakan oleh" tinggi={40} />
-      </div>
     </KerangkaInfo>
   );
 }
