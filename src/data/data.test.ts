@@ -48,8 +48,11 @@ describe('DAFTAR_UNSUR', () => {
 });
 
 describe('BANK_SOAL', () => {
-  it('bank soal cukup luas (>= 50, cakupan CP Fase 4 M4)', () => {
-    expect(BANK_SOAL.length).toBeGreaterThanOrEqual(50);
+  it('versi modul: tepat 20 soal, 5 soal per TP', () => {
+    expect(BANK_SOAL).toHaveLength(20);
+    for (const { no } of CPTP.tujuan) {
+      expect(BANK_SOAL.filter((q) => q.tpTerkait.includes(no))).toHaveLength(5);
+    }
   });
 
   it('id soal unik', () => {
@@ -85,18 +88,19 @@ describe('BANK_SOAL', () => {
     }
   });
 
-  // pilihSoal mengutamakan golongan kartu penyerang, jadi soal `umum` jarang
-  // keluar. Tiap golongan × tingkat harus punya soal untuk setiap TP agar
-  // semua TP benar-benar teruji saat bermain.
-  it('tiap golongan × tingkat punya soal untuk setiap TP', () => {
+  // pilihSoal mengutamakan golongan kartu penyerang. Versi modul (20 soal):
+  // tiap golongan punya tepat 1 soal per TP, dan tiap tingkat mencakup semua TP.
+  it('tiap golongan punya tepat 1 soal untuk setiap TP', () => {
     for (const g of Object.keys(GOLONGAN) as Golongan[]) {
-      for (const t of ['mudah', 'sedang', 'sulit'] as const) {
-        for (const { no } of CPTP.tujuan) {
-          const ada = BANK_SOAL.some(
-            (q) => q.golonganTerkait === g && q.tingkatKesulitan === t && q.tpTerkait.includes(no),
-          );
-          expect(ada, `${g}/${t} tanpa soal TP${no}`).toBe(true);
-        }
+      const tp = BANK_SOAL.filter((q) => q.golonganTerkait === g).flatMap((q) => q.tpTerkait);
+      expect(tp.sort(), g).toEqual(CPTP.tujuan.map((t) => t.no));
+    }
+  });
+
+  it('tiap tingkat kesulitan mencakup semua TP', () => {
+    for (const t of ['mudah', 'sedang', 'sulit'] as const) {
+      for (const { no } of CPTP.tujuan) {
+        expect(soalByKesulitan(t).some((q) => q.tpTerkait.includes(no)), `${t} TP${no}`).toBe(true);
       }
     }
   });
@@ -134,7 +138,7 @@ describe('Edisi Struktur Atom — data & soal', () => {
         diperiksa++;
       }
     }
-    expect(diperiksa).toBeGreaterThan(20);
+    expect(diperiksa).toBeGreaterThanOrEqual(3);
   });
 
   it('CPTP berisi 4 TP struktur atom & setiap TP punya soal di ketiga tingkat', () => {

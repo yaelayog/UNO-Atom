@@ -12,9 +12,9 @@ yang berubah adalah isi pembelajaran.
 | `src/data/unsur.ts`, `types.ts` | Tiap unsur punya `nomorMassa` (isotop paling melimpah; unsur radioaktif = isotop paling stabil). |
 | `src/components/Card.tsx` | Kartu unsur menampilkan notasi atom: nomor massa di atas, nomor atom di bawah, di kiri lambang. |
 | `src/data/cptp.ts` | 4 TP baru: (1) perkembangan model atom, (2) partikel penyusun atom, (3) p/n/e atom netral dari notasi, (4) ion (kation & anion). |
-| `src/data/kuis.ts` | 107 soal baru. Setiap golongan × tingkat kesulitan punya soal untuk keempat TP. |
+| `src/data/kuis.ts` | **Versi modul: 20 soal** (4 TP × 5). Tiap golongan punya tepat 1 soal per TP; tiap tingkat mencakup keempat TP. Rekap siap cetak: `docs/BANK-SOAL-20.md`. Versi lengkap 107 soal: `npm run gen:soal:107`. |
 | `src/data/funfact.ts` | 29 Fun Fact baru bertema struktur atom, terhubung ke soal terkait. |
-| `scripts/gen-soal-atom.py` | **Generator** kuis.ts & funfact.ts. Soal hitungan (TP3/TP4) dihitung otomatis dari data unsur. |
+| `scripts/gen-soal-atom.py` | **Generator** kuis.ts & funfact.ts (20 soal; arsip 107 soal di `gen-soal-atom-107.py`). Soal hitungan (TP3/TP4) dihitung otomatis dari data unsur. |
 | `BelajarScreen`, `InfoScreen`, `MainMenu` | Panel "Kenali Atom", rincian p/e/n per unsur, petunjuk membaca notasi, branding. |
 | `src/data/data.test.ts` | Test baru: nomor massa valid & notasi di soal selalu cocok dengan data unsur. |
 
