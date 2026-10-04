@@ -8,6 +8,8 @@ model atom, partikel penyusun atom, notasi atom, dan ion.
 
 > Salinan dari UNO-Chem (SPU kelas XI). **Baca `docs/SETUP-EDISI-ATOM.md`**
 > untuk daftar perubahan dan langkah setup Supabase/Vercel baru.
+> Bank soal: **versi modul, 20 soal** (4 TP × 5), sengaja diselaraskan dengan
+> modul ajar — rekap siap cetak di `docs/BANK-SOAL-20.md`.
 > Ubah soal lewat `npm run gen:soal` (generator `scripts/gen-soal-atom.py`).
 
 ## Menjalankan
