@@ -12,9 +12,6 @@ export const KREDIT = {
   instansi: 'Universitas Mulawarman',
   pembimbing: '' as string, // belum ada dosen pembimbing — dikosongkan (tidak ditampilkan)
   tahun: '2026',
-  kompetisi:
-    'Lomba Media Pembelajaran Digital FORKOM FKIP 2026 — ' +
-    'Kategori Gamifikasi Pembelajaran (SAINTEK)',
 
   // ── Sasaran ───────────────────────────────────────────────────────
   // Ringkas; CP & TP detail ada di layar "CP & Tujuan Pembelajaran".

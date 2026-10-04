@@ -144,7 +144,6 @@ export function AboutScreen() {
         {KREDIT.pembimbing && !KREDIT.pembimbing.startsWith('TODO') && (
           <p>Pembimbing: {KREDIT.pembimbing}</p>
         )}
-        <p className="text-tinta/55">Dikembangkan untuk {KREDIT.kompetisi}.</p>
       </BagianInfo>
 
       <BagianInfo judul="Jenjang & Mata Pelajaran">

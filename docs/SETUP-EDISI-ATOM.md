@@ -56,8 +56,8 @@ Import repo baru → isi Environment Variables `VITE_SUPABASE_URL` &
 - **`android-twa/` & `public/.well-known/assetlinks.json`** masih menunjuk ke
   `uno-chem.vercel.app` / `com.chemuno.app`. Jika ingin APK Edisi Atom, ganti
   `packageId`, `host`, buat keystore baru, dan perbarui assetlinks (lihat `docs/APK.md`).
-- **`src/data/kredit.ts` → `kompetisi`**: hapus/ubah jika aplikasi dipakai untuk
-  kelas, bukan lomba. (Logo panitia FORKOM sudah dihapus dari menu & Tentang.)
+- Logo panitia FORKOM dan teks "Dikembangkan untuk Lomba …" sudah dihapus dari
+  menu utama & halaman Tentang.
 - **`src/data/golongan.ts`** (fakta golongan) & Kartu Peristiwa: tetap, karena
   mekanik warna = golongan dipertahankan sebagai jembatan ke materi SPU berikutnya.
 - Logo `public/logo-chemuno.png` masih logo asli.
