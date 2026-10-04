@@ -7,7 +7,7 @@ App ini SPA (Vite + PWA). Vercel mendeteksi framework `vite` otomatis
 ## 1. Import repo
 
 1. Login **vercel.com** dengan akun GitHub.
-2. **Add New → Project** → pilih repo **`yaelayog/UNO-CHEM`** → **Import**.
+2. **Add New → Project** → pilih repo **`yaelayog/UNO-Atom`** → **Import**.
 3. Framework Preset akan otomatis **Vite**. Build/Output biarkan default
    (`npm run build` / `dist`).
 
@@ -25,7 +25,7 @@ Di layar import (atau **Project → Settings → Environment Variables**), tamba
 
 ## 3. Deploy
 
-Klik **Deploy**. Selesai → dapat URL `https://uno-chem-xxxx.vercel.app`.
+Klik **Deploy**. Selesai → dapat URL `https://uno-atom.vercel.app`.
 Setiap `git push` ke `main` → auto-deploy.
 
 ## 4. Setelah punya URL
