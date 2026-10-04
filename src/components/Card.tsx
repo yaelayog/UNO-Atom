@@ -181,11 +181,14 @@ export function Card({
             <span className="inline-flex items-center">
               {kartu.nomorMassa != null && (
                 <span
-                  className={`mr-[1px] flex flex-col items-end font-extrabold leading-[1.05] opacity-90 ${u.notasi}`}
+                  className={`mr-[1px] grid grid-cols-[auto_auto] items-baseline gap-x-[0.2em] font-extrabold leading-[1.05] opacity-90 ${u.notasi}`}
                   aria-hidden
                 >
-                  <span>{kartu.nomorMassa}</span>
-                  <span>{kartu.nomorAtom}</span>
+                  {/* Label A/Z kecil agar nomor massa & nomor atom tak tertukar */}
+                  <span className="text-[0.7em] opacity-60">A</span>
+                  <span className="text-right">{kartu.nomorMassa}</span>
+                  <span className="text-[0.7em] opacity-60">Z</span>
+                  <span className="text-right">{kartu.nomorAtom}</span>
                 </span>
               )}
               <span className={`font-display font-extrabold leading-none ${u.simbol}`}>
