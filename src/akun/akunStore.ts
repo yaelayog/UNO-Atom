@@ -14,6 +14,7 @@ import {
   rapikanAntrian,
   simpanAntrian,
 } from './antrianLaporan';
+import { emailGuru } from './tipe';
 import type {
   AkunMurid,
   HarianAkun,
@@ -361,17 +362,23 @@ export const useAkunStore = create<AkunStore>((set, get) => {
 
     bersihkanMisiSelesai: () => set({ misiSelesaiBaru: [] }),
 
-    masukGuru: async (email, sandi, daftar) => {
+    masukGuru: async (masukan, sandi, daftar) => {
       const sb = await getSupabase();
       if (!sb) return 'mode online tidak dikonfigurasi';
+      const email = emailGuru(masukan);
       set({ sibuk: true });
       try {
-        const { data, error } = daftar
-          ? await sb.auth.signUp({ email, password: sandi })
-          : await sb.auth.signInWithPassword({ email, password: sandi });
-        if (error) return error.message;
-        if (!data.session)
-          return 'Akun dibuat. Cek email untuk konfirmasi, lalu masuk lagi.';
+        // Daftar lewat Edge Function (admin, langsung terkonfirmasi) — bukan
+        // auth.signUp yang menuntut konfirmasi email & email yang valid.
+        if (daftar) {
+          const r = await kirimAkun('daftarGuru', { email, sandi });
+          if (r.error) return r.error;
+        }
+        const { data, error } = await sb.auth.signInWithPassword({ email, password: sandi });
+        if (error)
+          return /invalid login/i.test(error.message)
+            ? 'nama/email atau password salah'
+            : error.message;
         set({ guruEmail: data.user?.email ?? email });
         return null;
       } finally {

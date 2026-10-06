@@ -68,3 +68,23 @@ export interface HasilAkun {
 }
 
 export const namaTampil = (m: AkunMurid) => `${m.nama}#${m.kodeUnik}`;
+
+/**
+ * Akun guru boleh pakai teks apa saja ("Pak Budi", "budi@sekolah", ...).
+ * Supabase Auth tetap butuh format email, jadi teks yang bukan email dipetakan
+ * ke alamat sintetis di domain ini — konsisten saat daftar maupun masuk.
+ */
+const DOMAIN_GURU = 'guru.uno-atom.app';
+const POLA_EMAIL = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/;
+
+export function emailGuru(masukan: string): string {
+  const t = masukan.trim().toLowerCase();
+  if (POLA_EMAIL.test(t)) return t;
+  const slug = t.replace(/[^a-z0-9._-]+/g, '-').replace(/^[-.]+|[-.]+$/g, '');
+  return `${slug || 'guru'}@${DOMAIN_GURU}`;
+}
+
+/** Tampilkan nama guru tanpa domain sintetis. */
+export function labelGuru(email: string): string {
+  return email.endsWith(`@${DOMAIN_GURU}`) ? email.slice(0, -DOMAIN_GURU.length - 1) : email;
+}

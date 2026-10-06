@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getSupabase, onlineTersedia } from '../lib/supabase';
 import { useAkunStore } from '../akun/akunStore';
-import { namaTampil, type PilihanAkun } from '../akun/tipe';
+import { labelGuru, namaTampil, type PilihanAkun } from '../akun/tipe';
 import { useGameStore } from '../store/gameStore';
 
 type Tab = 'murid' | 'guru';
@@ -314,7 +314,7 @@ function PanelGuru() {
     return (
       <div className="flex flex-col gap-3">
         <div className="rounded-2xl bg-white p-3 text-sm font-bold text-tinta shadow-empuk">
-          Masuk sebagai <span className="text-lab">{guruEmail}</span>
+          Masuk sebagai <span className="text-lab">{labelGuru(guruEmail)}</span>
         </div>
 
         <button
@@ -391,10 +391,12 @@ function PanelGuru() {
 
   return (
     <div className="flex flex-col gap-3">
-      <Field label="Email guru">
+      <Field label="Nama / email guru">
         <input
           value={email}
-          type="email"
+          type="text"
+          autoCapitalize="none"
+          placeholder="bebas, misal: Pak Budi"
           onChange={(e) => setEmail(e.target.value)}
           className="w-full rounded-xl border border-black/10 bg-white px-4 py-2.5 text-sm font-bold text-tinta shadow-empuk outline-none focus:border-lab"
         />

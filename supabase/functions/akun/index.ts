@@ -93,6 +93,8 @@ async function tangani(
       return sinkronProgres(db, b);
     case 'keluar':
       return keluar(db, b);
+    case 'daftarGuru':
+      return daftarGuru(db, b);
     default:
       throw new Error('tipe aksi tak dikenal');
   }
@@ -421,5 +423,29 @@ async function sinkronProgres(db: SupabaseClient, b: Record<string, unknown>) {
 async function keluar(db: SupabaseClient, b: Record<string, unknown>) {
   const h = await sha256hex(bersih(b.token, 64));
   await db.from('murid').update({ sesi_token_hash: null }).eq('sesi_token_hash', h);
+  return { ok: true };
+}
+
+/**
+ * Buat akun guru LANGSUNG terkonfirmasi (tanpa email konfirmasi, tanpa batas
+ * kirim email Supabase). Klien lalu masuk biasa dengan signInWithPassword.
+ * Email sudah dinormalisasi klien (`emailGuru`) — teks bebas dipetakan ke
+ * domain sintetis, jadi di sini cukup cek bentuk dasarnya.
+ */
+async function daftarGuru(db: SupabaseClient, b: Record<string, unknown>) {
+  const email = bersih(b.email, 200).toLowerCase();
+  const sandi = String(b.sandi ?? '');
+  if (!email.includes('@')) throw new Error('nama/email guru kosong');
+  if (sandi.length < 6) throw new Error('password minimal 6 karakter');
+  const { error } = await db.auth.admin.createUser({
+    email,
+    password: sandi,
+    email_confirm: true,
+  });
+  if (error) {
+    if (/already|registered|exists/i.test(error.message))
+      throw new Error('nama/email ini sudah terdaftar — hapus centang "Buat akun guru baru" lalu masuk');
+    throw new Error(error.message);
+  }
   return { ok: true };
 }
