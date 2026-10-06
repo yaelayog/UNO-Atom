@@ -84,6 +84,8 @@ export function DashboardGuruScreen() {
   const [murid, setMurid] = useState<MuridRow[]>([]);
   const [memuat, setMemuat] = useState(false);
   const [pesan, setPesan] = useState('');
+  const [konfirmasiHapus, setKonfirmasiHapus] = useState(false);
+  const [menghapus, setMenghapus] = useState(false);
 
   useEffect(() => {
     void (async () => {
@@ -116,6 +118,26 @@ export function DashboardGuruScreen() {
     void muatMurid();
   }, [muatMurid]);
 
+  /** Hapus kelas terpilih. Murid tidak ikut terhapus — FK `on delete set null`
+   * melepas mereka jadi akun bebas, progres tetap utuh. */
+  async function hapusKelas() {
+    const sb = await getSupabase();
+    if (!sb || !pilih) return;
+    setMenghapus(true);
+    const { data, error } = await sb.from('kelas').delete().eq('id', pilih).select('id');
+    setMenghapus(false);
+    setKonfirmasiHapus(false);
+    if (error) return setPesan(error.message);
+    if (!data?.length) return setPesan('Kelas gagal dihapus — coba masuk ulang sebagai guru.');
+    const sisa = kelas.filter((k) => k.id !== pilih);
+    setKelas(sisa);
+    setMurid([]);
+    setPilih(sisa[0]?.id ?? '');
+    setPesan(sisa.length === 0 ? 'Belum ada kelas. Buat kelas dulu di menu Akun.' : '');
+  }
+
+  const kelasTerpilih = kelas.find((k) => k.id === pilih);
+
   return (
     <main className="mx-auto flex min-h-full max-w-md flex-col gap-4 p-5 no-select">
       <button
@@ -132,7 +154,10 @@ export function DashboardGuruScreen() {
       {kelas.length > 0 && (
         <select
           value={pilih}
-          onChange={(e) => setPilih(e.target.value)}
+          onChange={(e) => {
+            setPilih(e.target.value);
+            setKonfirmasiHapus(false);
+          }}
           className="w-full rounded-2xl border border-black/10 bg-white px-4 py-2.5 text-sm font-bold text-tinta shadow-empuk outline-none focus:border-lab"
         >
           {kelas.map((k) => (
@@ -142,6 +167,48 @@ export function DashboardGuruScreen() {
           ))}
         </select>
       )}
+
+      {kelasTerpilih &&
+        (konfirmasiHapus ? (
+          <div className="rounded-2xl border border-alkali/30 bg-white p-3 shadow-empuk">
+            <p className="text-sm font-bold text-tinta">
+              Hapus kelas <span className="text-alkali">{kelasTerpilih.nama_kelas}</span>?
+            </p>
+            <p className="mt-1 text-[11px] text-tinta/55">
+              {murid.length > 0
+                ? `${murid.length} murid akan dilepas dari kelas ini. `
+                : ''}
+              Akun & progres murid tetap ada; kode kelas {kelasTerpilih.kode_kelas} tidak bisa
+              dipakai lagi.
+            </p>
+            <div className="mt-2 flex gap-2">
+              <button
+                type="button"
+                onClick={() => setKonfirmasiHapus(false)}
+                disabled={menghapus}
+                className="flex-1 rounded-xl bg-kertas px-3 py-2 text-sm font-bold text-tinta cursor-pointer disabled:opacity-40"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={() => void hapusKelas()}
+                disabled={menghapus}
+                className="flex-1 rounded-xl bg-alkali px-3 py-2 text-sm font-extrabold text-white cursor-pointer transition hover:brightness-110 disabled:opacity-40"
+              >
+                {menghapus ? 'Menghapus…' : 'Ya, hapus'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setKonfirmasiHapus(true)}
+            className="w-fit self-end rounded-full bg-white px-3 py-1 text-xs font-bold text-alkali shadow-empuk cursor-pointer hover:bg-alkali-050"
+          >
+            🗑 Hapus kelas ini
+          </button>
+        ))}
 
       {memuat && <p className="text-center text-xs text-tinta/50">Memuat…</p>}
       {pesan && (
